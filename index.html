@@ -86,6 +86,27 @@ footer{background:#080d13;color:#b5c0cc;padding:25px 0}.footer-inner{display:fle
 .btn-whatsapp:hover { background: #168947; }
 @media (max-width: 900px) { .product-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 650px) { .product-cards { grid-template-columns: 1fr; } }
+
+/* Carrusel de productos: 3 visibles en escritorio y 1 en celular */
+.products-carousel { position: relative; display: flex; align-items: center; gap: 10px; }
+.product-viewport { overflow: hidden; flex: 1; min-width: 0; }
+.product-track { display: flex; transition: transform .45s ease; will-change: transform; }
+.product-track .product-card { flex: 0 0 calc((100% - 36px) / 3); margin-right: 18px; box-sizing: border-box; }
+.product-track .product-card:last-child { margin-right: 0; }
+.product-arrow { flex: 0 0 44px; width: 44px; height: 44px; border: 0; border-radius: 50%; background: #1265c5; color: #fff; font-size: 32px; line-height: 1; cursor: pointer; box-shadow: 0 8px 18px rgba(20,34,55,.15); display: grid; place-items: center; z-index: 2; }
+.product-arrow:hover { background: #0d4f9b; }
+.product-arrow:disabled { opacity: .35; cursor: default; }
+.product-dots { display: flex; justify-content: center; gap: 7px; margin-top: 18px; }
+.product-dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: #c7d1dc; cursor: pointer; }
+.product-dot.active { background: #1265c5; transform: scale(1.25); }
+@media (max-width: 900px) {
+  .product-track .product-card { flex-basis: calc((100% - 18px) / 2); }
+}
+@media (max-width: 650px) {
+  .products-carousel { gap: 6px; }
+  .product-track .product-card { flex-basis: 100%; margin-right: 0; }
+  .product-arrow { flex-basis: 38px; width: 38px; height: 38px; font-size: 28px; }
+}
 </style>
 </head>
 <body>
@@ -185,38 +206,47 @@ footer{background:#080d13;color:#b5c0cc;padding:25px 0}.footer-inner{display:fle
           <h2>Accesorios electrónicos</h2>
           <p>Accesorios electrónicos disponibles para venta. Consultá por modelos, precios y disponibilidad.</p>
         </div>
-        <div class="product-cards">
-          <article class="product-card product-item">
-            <div class="product-image-wrap">
-              <img class="product-image" src="assets/productos/cargador-samsung-45w.png" alt="Cargador Samsung 45W con cable USB-C a USB-C">
+        <div class="products-carousel" aria-label="Productos de accesorios electrónicos">
+          <button class="product-arrow product-prev" type="button" aria-label="Productos anteriores">‹</button>
+          <div class="product-viewport">
+            <div class="product-track">
+              <article class="product-card product-item">
+                <div class="product-image-wrap"><img class="product-image" src="assets/productos/cargador-samsung-45w.png" alt="Cargador Samsung 45W con cable USB-C a USB-C"></div>
+                <div class="product-info"><span class="product-tag">ACCESORIOS ELECTRÓNICOS</span><h3>Cargador Samsung 45W</h3><ul class="product-features"><li>Carga rápida</li><li>Incluye cabezal 45W</li><li>Incluye cable C a C</li></ul><a class="btn btn-whatsapp product-whatsapp" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20el%20Cargador%20Samsung%2045W." target="_blank" rel="noopener">🟢 Consultar por WhatsApp</a></div>
+              </article>
+              <article class="product-card product-item">
+                <div class="product-image-wrap"><img class="product-image" src="assets/productos/cargador-iphone-20w.png" alt="Cargador iPhone 20W con cable USB-C a Lightning"></div>
+                <div class="product-info"><span class="product-tag">ACCESORIOS ELECTRÓNICOS</span><h3>Cargador iPhone 20W</h3><ul class="product-features"><li>Carga rápida</li><li>Incluye cabezal 20W</li><li>Incluye cable C a Lightning</li></ul><a class="btn btn-whatsapp product-whatsapp" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20el%20Cargador%20iPhone%2020W." target="_blank" rel="noopener">🟢 Consultar por WhatsApp</a></div>
+              </article>
+              <article class="product-card product-item">
+                <div class="product-image-wrap"><img class="product-image" src="assets/productos/control-universal-tv.png" alt="Control universal para TV LCD LED y Smart"></div>
+                <div class="product-info"><span class="product-tag">ACCESORIOS ELECTRÓNICOS</span><h3>Control universal para TV</h3><ul class="product-features"><li>Compatible con LCD</li><li>Compatible con LED</li><li>Compatible con Smart TV</li></ul><a class="btn btn-whatsapp product-whatsapp" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20el%20Control%20universal%20para%20TV." target="_blank" rel="noopener">🟢 Consultar por WhatsApp</a></div>
+              </article>
+              <article class="product-card product-item">
+                <div class="product-image-wrap"><img class="product-image" src="assets/productos/mouse-noga-optico.png" alt="Mouse Noga óptico 1000 DPI USB"></div>
+                <div class="product-info"><span class="product-tag">ACCESORIOS ELECTRÓNICOS</span><h3>Mouse Noga óptico</h3><ul class="product-features"><li>1000 DPI</li><li>Sensor óptico</li><li>Conexión USB</li></ul><a class="btn btn-whatsapp product-whatsapp" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20el%20Mouse%20Noga%20óptico." target="_blank" rel="noopener">🟢 Consultar por WhatsApp</a></div>
+              </article>
+              <article class="product-card product-item">
+                <div class="product-image-wrap"><img class="product-image" src="assets/productos/plafon-led-18w.png" alt="Plafón LED 18W blanco luz fría"></div>
+                <div class="product-info"><span class="product-tag">ACCESORIOS ELECTRÓNICOS</span><h3>Plafón LED 18W Blanco</h3><ul class="product-features"><li>Luz blanca fría 6500K</li><li>18W de potencia</li><li>Fácil de instalar</li></ul><a class="btn btn-whatsapp product-whatsapp" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20el%20Plafón%20LED%2018W%20Blanco." target="_blank" rel="noopener">🟢 Consultar por WhatsApp</a></div>
+              </article>
+              <article class="product-card product-item">
+                <div class="product-image-wrap"><img class="product-image" src="assets/productos/adaptador-usbc-rj45.png" alt="Adaptador USB-C a RJ45 Ethernet 10/100 Mbps"></div>
+                <div class="product-info"><span class="product-tag">ACCESORIOS ELECTRÓNICOS</span><h3>Adaptador USB-C a RJ45 Ethernet/Red</h3><ul class="product-features"><li>10/100 Mbps</li><li>Conexión USB-C a RJ45</li><li>Excelente calidad</li></ul><a class="btn btn-whatsapp product-whatsapp" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20el%20Adaptador%20USB-C%20a%20RJ45." target="_blank" rel="noopener">🟢 Consultar por WhatsApp</a></div>
+              </article>
+              <article class="product-card product-item">
+                <div class="product-image-wrap"><img class="product-image" src="assets/productos/auriculares-usbc.png" alt="Auriculares con cable USB-C"></div>
+                <div class="product-info"><span class="product-tag">ACCESORIOS ELECTRÓNICOS</span><h3>Auriculares con cable USB-C</h3><ul class="product-features"><li>Conexión USB-C</li><li>Excelente calidad de sonido</li><li>Manos libres · cable de 1 metro</li></ul><a class="btn btn-whatsapp product-whatsapp" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20los%20Auriculares%20con%20cable%20USB-C." target="_blank" rel="noopener">🟢 Consultar por WhatsApp</a></div>
+              </article>
+              <article class="product-card product-item">
+                <div class="product-image-wrap"><img class="product-image" src="assets/productos/cable-usbc-usbc-50w.png" alt="Cable USB-C a USB-C Premium 50W"></div>
+                <div class="product-info"><span class="product-tag">ACCESORIOS ELECTRÓNICOS</span><h3>Cable USB-C a USB-C</h3><ul class="product-features"><li>Calidad premium</li><li>Carga rápida 50W</li><li>Longitud: 1 metro</li></ul><a class="btn btn-whatsapp product-whatsapp" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20el%20Cable%20USB-C%20a%20USB-C%2050W." target="_blank" rel="noopener">🟢 Consultar por WhatsApp</a></div>
+              </article>
             </div>
-            <div class="product-info">
-              <span class="product-tag">ACCESORIOS ELECTRÓNICOS</span>
-              <h3>Cargador Samsung 45W</h3>
-              <ul class="product-features">
-                <li>Carga rápida</li>
-                <li>Incluye cabezal 45W</li>
-                <li>Incluye cable C a C</li>
-              </ul>
-              <a class="btn btn-whatsapp product-whatsapp" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20el%20Cargador%20Samsung%2045W." target="_blank" rel="noopener">🟢 Consultar por WhatsApp</a>
-            </div>
-          </article>
-          <article class="product-card product-item">
-            <div class="product-image-wrap">
-              <img class="product-image" src="assets/productos/cargador-iphone-20w.png" alt="Cargador iPhone 20W con cable USB-C a Lightning">
-            </div>
-            <div class="product-info">
-              <span class="product-tag">ACCESORIOS ELECTRÓNICOS</span>
-              <h3>Cargador iPhone 20W</h3>
-              <ul class="product-features">
-                <li>Carga rápida</li>
-                <li>Incluye cabezal 20W</li>
-                <li>Incluye cable C a Lightning</li>
-              </ul>
-              <a class="btn btn-whatsapp product-whatsapp" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20el%20Cargador%20iPhone%2020W." target="_blank" rel="noopener">🟢 Consultar por WhatsApp</a>
-            </div>
-          </article>
+          </div>
+          <button class="product-arrow product-next" type="button" aria-label="Siguientes productos">›</button>
         </div>
+        <div class="product-dots" aria-label="Páginas de productos"></div>
         <div class="products-note">
           <strong>¿Buscás un repuesto o accesorio específico?</strong>
           <span>Consultanos por WhatsApp y verificamos disponibilidad.</span>
@@ -411,6 +441,49 @@ document.querySelectorAll('.work-photo').forEach(btn => btn.addEventListener('cl
 document.querySelector('.photo-modal-close')?.addEventListener('click', closePhotoModal);
 photoModal?.addEventListener('click', e => { if (e.target === photoModal) closePhotoModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePhotoModal(); });
+
+// Carrusel de productos: muestra 3 en escritorio, 2 en tablet y 1 en celular.
+const productViewport = document.querySelector('.product-viewport');
+const productTrack = document.querySelector('.product-track');
+const productCards = [...document.querySelectorAll('.product-track .product-card')];
+const productPrev = document.querySelector('.product-prev');
+const productNext = document.querySelector('.product-next');
+const productDots = document.querySelector('.product-dots');
+let productPage = 0;
+
+const productVisible = () => window.innerWidth <= 650 ? 1 : (window.innerWidth <= 900 ? 2 : 3);
+const productPages = () => Math.max(1, Math.ceil(productCards.length / productVisible()));
+
+function renderProductDots() {
+  if (!productDots) return;
+  productDots.innerHTML = '';
+  for (let i = 0; i < productPages(); i++) {
+    const dot = document.createElement('button');
+    dot.className = 'product-dot' + (i === productPage ? ' active' : '');
+    dot.type = 'button';
+    dot.setAttribute('aria-label', `Mostrar página ${i + 1} de productos`);
+    dot.addEventListener('click', () => { productPage = i; updateProductCarousel(); });
+    productDots.appendChild(dot);
+  }
+}
+
+function updateProductCarousel() {
+  if (!productTrack || !productViewport) return;
+  const visible = productVisible();
+  const pages = productPages();
+  productPage = Math.min(productPage, pages - 1);
+  const step = productViewport.clientWidth / visible;
+  productTrack.style.transform = `translateX(-${productPage * step * visible}px)`;
+  if (productPrev) productPrev.disabled = productPage === 0;
+  if (productNext) productNext.disabled = productPage === pages - 1;
+  renderProductDots();
+}
+
+productPrev?.addEventListener('click', () => { if (productPage > 0) { productPage--; updateProductCarousel(); } });
+productNext?.addEventListener('click', () => { if (productPage < productPages() - 1) { productPage++; updateProductCarousel(); } });
+window.addEventListener('resize', updateProductCarousel);
+updateProductCarousel();
+
 
   </script>
 </body>
