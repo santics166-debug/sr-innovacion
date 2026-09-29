@@ -89,7 +89,7 @@ function renderProductos() {
         <div class="product-image-wrap">
           ${
             imagen
-              ? `<img class="product-image" src="${escapar(imagen)}" alt="${nombre}" loading="lazy">`
+              ? `<img class="product-image" src="${escapar(imagen)}" alt="${nombre}">`
               : `<div class="product-image" style="display:grid;place-items:center;color:#687382;background:#eef2f6;">Sin imagen</div>`
           }
         </div>
