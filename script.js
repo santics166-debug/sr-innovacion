@@ -1,3 +1,13 @@
+/* =====================================================
+   SR INNOVACION - SCRIPT PUBLICO
+   Productos y trabajos cargados desde Cloudflare
+===================================================== */
+
+
+/* =====================================================
+   MENÚ
+===================================================== */
+
 const menuBtn = document.querySelector('.menu-btn');
 const menu = document.querySelector('.menu');
 
@@ -8,24 +18,1106 @@ menuBtn?.addEventListener('click', () => {
 
 document.querySelectorAll('.menu a').forEach(link => {
   link.addEventListener('click', () => {
-    menu.classList.remove('open');
+    menu?.classList.remove('open');
     menuBtn?.setAttribute('aria-expanded', 'false');
   });
 });
 
 
-const photoModal = document.querySelector('#photoModal');
-const photoModalImg = document.querySelector('#photoModalImg');
-const photoModalCaption = document.querySelector('#photoModalCaption');
-const closePhotoModal = () => { photoModal?.classList.remove('open'); photoModal?.setAttribute('aria-hidden','true'); };
-document.querySelectorAll('.work-photo').forEach(btn => btn.addEventListener('click', () => {
-  if (!photoModal) return;
-  photoModalImg.src = btn.dataset.full;
-  photoModalImg.alt = btn.dataset.caption || 'Trabajo SR INNOVACION';
-  photoModalCaption.textContent = btn.dataset.caption || '';
-  photoModal.classList.add('open');
-  photoModal.setAttribute('aria-hidden','false');
-}));
-document.querySelector('.photo-modal-close')?.addEventListener('click', closePhotoModal);
-photoModal?.addEventListener('click', e => { if (e.target === photoModal) closePhotoModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closePhotoModal(); });
+/* =====================================================
+   WHATSAPP
+===================================================== */
+
+const WHATSAPP =
+  'https://wa.me/543454958446?text=';
+
+
+/* =====================================================
+   UTILIDADES
+===================================================== */
+
+function escapar(texto) {
+
+  return String(texto || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
+}
+
+
+function whatsappProducto(nombre) {
+
+  return WHATSAPP +
+    encodeURIComponent(
+      Hola SR INNOVACION, quiero consultar por el producto ${nombre}.
+    );
+
+}
+
+
+/* =====================================================
+   PRODUCTOS
+===================================================== */
+
+const productTrack =
+  document.querySelector('.product-track');
+
+const productViewport =
+  document.querySelector('.product-viewport');
+
+const productPrev =
+  document.querySelector('.product-prev');
+
+const productNext =
+  document.querySelector('.product-next');
+
+const productDots =
+  document.querySelector('.product-dots');
+
+let productPage = 0;
+
+
+let productosPublicos = [];
+
+
+function productVisible() {
+
+  if (window.innerWidth <= 650) {
+    return 1;
+  }
+
+  if (window.innerWidth <= 900) {
+    return 2;
+  }
+
+  return 3;
+
+}
+
+
+function productPages() {
+
+  return Math.max(
+    1,
+    Math.ceil(
+      productosPublicos.length /
+      productVisible()
+    )
+  );
+
+}
+
+
+function renderProductos() {
+
+  if (!productTrack) {
+    return;
+  }
+
+
+  if (!productosPublicos.length) {
+
+    productTrack.innerHTML =
+      '<p style="padding:30px;text-align:center;">No hay productos disponibles.</p>';
+
+    return;
+
+  }
+
+
+  productTrack.innerHTML =
+    productosPublicos.map(function(producto) {
+
+      const nombre =
+        escapar(producto.nombre);
+
+      const precio =
+        producto.precio
+          ? escapar(producto.precio)
+          : 'Consultar';
+
+
+      const caracteristicas =
+        String(
+          producto.caracteristicas || ''
+        )
+        .split(/\r?\n|,/)
+        .map(function(item) {
+          return item.trim();
+        })
+        .filter(Boolean);
+
+
+      const listaCaracteristicas =
+        caracteristicas.length
+          ? '<ul class="product-features">' +
+            caracteristicas.map(function(item) {
+              return '<li>' +
+                escapar(item) +
+                '</li>';
+            }).join('') +
+            '</ul>'
+          : '';
+
+
+      const imagen =
+        producto.imagen ||
+        '';
+
+
+      return `
+        <article class="product-card product-item">
+
+          <div class="product-image-wrap">
+
+            ${
+              imagen
+                ? `
+                  <img
+                    class="product-image"
+                    src="${escapar(imagen)}"
+                    alt="${nombre}"
+                    loading="lazy"
+                  >
+                `
+                : `
+                  <div
+                    class="product-image"
+                    style="
+                      display:grid;
+                      place-items:center;
+                      color:#687382;
+                      background:#eef2f6;
+                    "
+                  >
+                    Sin imagen
+                  </div>
+                `
+            }
+
+          </div>
+
+          <div class="product-info">
+
+            <span class="product-tag">
+              ACCESORIOS ELECTRÓNICOS
+            </span>
+
+            <h3>${nombre}</h3>
+
+            ${listaCaracteristicas}
+
+            <div
+              style="
+                font-size:18px;
+                font-weight:800;
+                color:#1265c5;
+                margin:8px 0 14px;
+              "
+            >
+              ${precio}
+            </div>
+
+            <a
+              class="btn btn-whatsapp product-whatsapp"
+              href="${whatsappProducto(
+                String(producto.nombre || '')
+              )}"
+              target="_blank"
+              rel="noopener"
+            >
+              🟢 Consultar por WhatsApp
+            </a>
+
+          </div>
+
+        </article>
+      `;
+
+    }).join('');
+
+
+  productPage = 0;
+
+  renderProductDots();
+
+  updateProductCarousel();
+
+}
+
+
+function renderProductDots() {
+
+  if (!productDots) {
+    return;
+  }
+
+
+  productDots.innerHTML = '';
+
+
+  const paginas =
+    productPages();
+
+
+  for (
+    let i = 0;
+    i < paginas;
+    i++
+  ) {
+
+    const dot =
+      document.createElement('button');
+
+
+    dot.className =
+      'product-dot' +
+      (
+        i === productPage
+          ? ' active'
+          : ''
+      );
+
+
+    dot.type =
+      'button';
+
+
+    dot.setAttribute(
+      'aria-label',
+      Mostrar página ${i + 1} de productos
+    );
+
+
+    dot.addEventListener(
+      'click',
+      function() {
+
+        productPage = i;
+
+        updateProductCarousel();
+
+      }
+    );
+
+
+    productDots.appendChild(dot);
+
+  }
+
+}
+
+
+function updateProductCarousel() {
+
+  if (
+    !productTrack ||
+    !productViewport
+  ) {
+    return;
+  }
+
+
+  const visible =
+    productVisible();
+
+
+  const paginas =
+    productPages();
+
+
+  productPage =
+    Math.min(
+      productPage,
+      paginas - 1
+    );
+
+
+  const step =
+    productViewport.clientWidth /
+    visible;
+
+
+  productTrack.style.transform =
+    `translateX(-${
+      productPage *
+      step *
+      visible
+    }px)`;
+
+
+  if (productPrev) {
+
+    productPrev.disabled =
+      productPage === 0;
+
+  }
+
+
+  if (productNext) {
+
+    productNext.disabled =
+      productPage === paginas - 1;
+
+  }
+
+
+  renderProductDots();
+
+}
+
+
+productPrev?.addEventListener(
+  'click',
+  function() {
+
+    if (productPage > 0) {
+
+      productPage--;
+
+      updateProductCarousel();
+
+    }
+
+  }
+);
+
+
+productNext?.addEventListener(
+  'click',
+  function() {
+
+    if (
+      productPage <
+      productPages() - 1
+    ) {
+
+      productPage++;
+
+      updateProductCarousel();
+
+    }
+
+  }
+);
+
+
+window.addEventListener(
+  'resize',
+  updateProductCarousel
+);
+
+
+/* =====================================================
+   CARGAR PRODUCTOS DESDE D1
+===================================================== */
+
+async function cargarProductosPublicos() {
+
+  try {
+
+    const respuesta =
+      await fetch(
+        '/api/productos',
+        {
+          cache:'no-store'
+        }
+      );
+
+
+    if (!respuesta.ok) {
+
+      throw new Error(
+        'No se pudieron cargar los productos'
+      );
+
+    }
+
+
+    const datos =
+      await respuesta.json();
+
+
+    productosPublicos =
+      Array.isArray(datos)
+        ? datos
+        : [];
+
+
+    renderProductos();
+
+
+  } catch (error) {
+
+    console.error(
+      'Error productos:',
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   TRABAJOS
+===================================================== */
+
+const categoriasTrabajo = {
+
+  'Cortadoras de fiambre': {
+
+    clase:'cortadoras',
+
+    numero:'1',
+
+    descripcion:
+      'Mantenimiento, reparación y puesta a punto'
+
+  },
+
+  'Balanzas electrónicas': {
+
+    clase:'balanzas',
+
+    numero:'2',
+
+    descripcion:
+      'Reparación, mantenimiento y calibración'
+
+  },
+
+  'Máquinas gastronómicas': {
+
+    clase:'gastronomicas',
+
+    numero:'3',
+
+    descripcion:
+      'Mantenimiento, reparación y reemplazo de componentes'
+
+  }
+
+};
+
+
+function obtenerCategoriaTrabajo(nombre) {
+
+  if (
+    categoriasTrabajo[nombre]
+  ) {
+
+    return categoriasTrabajo[nombre];
+
+  }
+
+
+  return {
+
+    clase:
+      String(nombre || 'otros')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-'),
+
+    numero:'',
+
+    descripcion:
+      'Trabajos realizados por SR INNOVACION'
+
+  };
+
+}
+
+
+/* =====================================================
+   MODAL DE FOTOS
+===================================================== */
+
+let photoModal =
+  document.querySelector('#photoModal');
+
+let photoModalImg =
+  document.querySelector('#photoModalImg');
+
+let photoModalCaption =
+  document.querySelector('#photoModalCaption');
+
+
+function cerrarModalFoto() {
+
+  photoModal?.classList.remove('open');
+
+  photoModal?.setAttribute(
+    'aria-hidden',
+    'true'
+  );
+
+}
+
+
+function abrirModalFoto(
+  imagen,
+  descripcion
+) {
+
+  if (!photoModal) {
+    return;
+  }
+
+
+  photoModalImg.src =
+    imagen;
+
+
+  photoModalImg.alt =
+    descripcion ||
+    'Trabajo SR INNOVACION';
+
+
+  photoModalCaption.textContent =
+    descripcion || '';
+
+
+  photoModal.classList.add(
+    'open'
+  );
+
+
+  photoModal.setAttribute(
+    'aria-hidden',
+    'false'
+  );
+
+}
+
+
+document
+  .querySelector('.photo-modal-close')
+  ?.addEventListener(
+    'click',
+    cerrarModalFoto
+  );
+
+
+photoModal?.addEventListener(
+  'click',
+  function(e) {
+
+    if (
+      e.target === photoModal
+    ) {
+
+      cerrarModalFoto();
+
+    }
+
+  }
+);
+
+
+document.addEventListener(
+  'keydown',
+  function(e) {
+
+    if (
+      e.key === 'Escape'
+    ) {
+
+      cerrarModalFoto();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   CARGAR TRABAJOS DESDE D1
+===================================================== */
+
+async function cargarTrabajosPublicos() {
+
+  try {
+
+    const respuesta =
+      await fetch(
+        '/api/trabajos',
+        {
+          cache:'no-store'
+        }
+      );
+
+
+    if (!respuesta.ok) {
+
+      throw new Error(
+        'No se pudieron cargar los trabajos'
+      );
+
+    }
+
+
+    const trabajos =
+      await respuesta.json();
+
+
+    renderTrabajos(
+      Array.isArray(trabajos)
+        ? trabajos
+        : []
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      'Error trabajos:',
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   RENDER TRABAJOS
+===================================================== */
+
+function renderTrabajos(
+  trabajos
+) {
+
+  const contenedor =
+    document.querySelector(
+      '.work-categories'
+    );
+
+
+  if (!contenedor) {
+    return;
+  }
+
+
+  const grupos = {};
+
+
+  trabajos.forEach(
+    function(trabajo) {
+
+      const categoria =
+        trabajo.categoria ||
+        'Otros';
+
+
+      if (!grupos[categoria]) {
+
+        grupos[categoria] = [];
+
+      }
+
+
+      grupos[categoria].push(
+        trabajo
+      );
+
+    }
+  );
+
+
+  const ordenCategorias = [
+    'Cortadoras de fiambre',
+    'Balanzas electrónicas',
+    'Máquinas gastronómicas'
+  ];
+
+
+  const categoriasFinales =
+    ordenCategorias
+      .filter(function(categoria) {
+        return grupos[categoria];
+      });
+
+
+  Object.keys(grupos).forEach(
+    function(categoria) {
+
+      if (
+        !categoriasFinales.includes(
+          categoria
+        )
+      ) {
+
+        categoriasFinales.push(
+          categoria
+        );
+
+      }
+
+    }
+  );
+
+
+  if (!categoriasFinales.length) {
+
+    contenedor.innerHTML =
+      '<p style="text-align:center;padding:30px;color:#687382;">Todavía no hay trabajos publicados.</p>';
+
+    return;
+
+  }
+
+
+  contenedor.innerHTML =
+    categoriasFinales.map(
+      function(categoria) {
+
+        const config =
+          obtenerCategoriaTrabajo(
+            categoria
+          );
+
+
+        const lista =
+          grupos[categoria] || [];
+
+
+        return `
+          <article
+            class="work-category"
+            data-category="${escapar(config.clase)}"
+          >
+
+            <button
+              class="work-category-toggle"
+              type="button"
+              aria-expanded="false"
+            >
+
+              <span class="work-category-icon">
+                ${escapar(config.numero)}
+              </span>
+
+              <span class="work-category-info">
+
+                <strong>
+                  ${escapar(categoria)}
+                </strong>
+
+                <small>
+                  ${escapar(config.descripcion)}
+                </small>
+
+              </span>
+
+              <span class="work-category-count">
+
+                ${lista.length} trabajo${lista.length === 1 ? '' : 's'}
+
+                <b>+</b>
+
+              </span>
+
+            </button>
+
+
+            <div
+              class="work-gallery-wrap"
+              hidden
+            >
+
+              ${
+                lista.map(
+                  function(trabajo) {
+
+                    const fotos =
+                      Array.isArray(
+                        trabajo.imagenes
+                      )
+                        ? trabajo.imagenes
+                        : [];
+
+
+                    return `
+
+                      <div class="work-job">
+
+                        <div class="work-job-heading">
+
+                          <strong>
+                            ${escapar(
+                              trabajo.nombre
+                            )}
+                          </strong>
+
+                          <span>
+                            ${fotos.length}
+                            foto${fotos.length === 1 ? '' : 's'}
+                          </span>
+
+                        </div>
+
+
+                        ${
+                          trabajo.descripcion
+                            ? `
+                              <div
+                                style="
+                                  color:#687382;
+                                  font-size:13px;
+                                  margin-bottom:12px;
+                                "
+                              >
+                                ${escapar(
+                                  trabajo.descripcion
+                                )}
+                              </div>
+                            `
+                            : ''
+                        }
+
+
+                        <div class="work-gallery">
+
+                          ${
+                            fotos.map(
+                              function(
+                                imagen,
+                                indice
+                              ) {
+
+                                const caption =
+                                  ${categoria} · ${trabajo.nombre} · Foto ${indice + 1} (${indice + 1}/${fotos.length});
+
+
+                                return `
+
+                                  <button
+                                    class="work-photo"
+                                    type="button"
+                                    data-full="${escapar(imagen)}"
+                                    data-caption="${escapar(caption)}"
+                                  >
+
+                                    <img
+                                      src="${escapar(imagen)}"
+                                      alt="${escapar(caption)}"
+                                      loading="lazy"
+                                    >
+
+                                    <span>
+                                      Ver foto
+                                    </span>
+
+                                  </button>
+
+                                `;
+
+                              }
+                            ).join('')
+
+                          }
+
+                        </div>
+
+                      </div>
+
+                    `;
+
+                  }
+                ).join('')
+              }
+
+            </div>
+
+          </article>
+        `;
+
+      }
+    ).join('');
+
+
+  activarGalerias();
+
+  activarFotos();
+
+}
+
+
+/* =====================================================
+   ACTIVAR GALERÍAS
+===================================================== */
+
+function activarGalerias() {
+
+  document
+    .querySelectorAll(
+      '.work-category-toggle'
+    )
+    .forEach(
+      function(btn) {
+
+        btn.addEventListener(
+          'click',
+          function() {
+
+            const category =
+              btn.closest(
+                '.work-category'
+              );
+
+
+            const panel =
+              category?.querySelector(
+                '.work-gallery-wrap'
+              );
+
+
+            if (
+              !category ||
+              !panel
+            ) {
+
+              return;
+
+            }
+
+
+            const willOpen =
+              panel.hidden;
+
+
+            document
+              .querySelectorAll(
+                '.work-category'
+              )
+              .forEach(
+                function(item) {
+
+                  const otherBtn =
+                    item.querySelector(
+                      '.work-category-toggle'
+                    );
+
+
+                  const otherPanel =
+                    item.querySelector(
+                      '.work-gallery-wrap'
+                    );
+
+
+                  if (
+                    item !== category
+                  ) {
+
+                    item.classList.remove(
+                      'open'
+                    );
+
+
+                    otherBtn?.setAttribute(
+                      'aria-expanded',
+                      'false'
+                    );
+
+
+                    if (otherPanel) {
+
+                      otherPanel.hidden =
+                        true;
+
+                    }
+
+                  }
+
+                }
+              );
+
+
+            category.classList.toggle(
+              'open',
+              willOpen
+            );
+
+
+            btn.setAttribute(
+              'aria-expanded',
+              String(willOpen)
+            );
+
+
+            panel.hidden =
+              !willOpen;
+
+
+            if (willOpen) {
+
+              setTimeout(
+                function() {
+
+                  category.scrollIntoView({
+                    behavior:'smooth',
+                    block:'start'
+                  });
+
+                },
+                40
+              );
+
+            }
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =====================================================
+   ACTIVAR FOTOS
+===================================================== */
+
+function activarFotos() {
+
+  document
+    .querySelectorAll(
+      '.work-photo'
+    )
+    .forEach(
+      function(btn) {
+
+        btn.addEventListener(
+          'click',
+          function() {
+
+            abrirModalFoto(
+              btn.dataset.full,
+              btn.dataset.caption
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =====================================================
+   INICIO
+===================================================== */
+
+cargarProductosPublicos();
+
+cargarTrabajosPublicos();
+Enviado
+Escribir mensaje
+Escribe a Santiago Rivero
+
+
