@@ -82,7 +82,9 @@ function renderProductos() {
         '</ul>'
       : '';
 
-    const imagen = producto.imagen || '';
+    const imagen = producto.imagen
+      ? new URL(producto.imagen, window.location.origin).href
+      : '';
 
     return `
       <article class="product-card product-item">
