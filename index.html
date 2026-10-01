@@ -107,6 +107,20 @@ footer{background:#080d13;color:#b5c0cc;padding:25px 0}.footer-inner{display:fle
   .product-track .product-card { flex-basis: 100%; margin-right: 0; }
   .product-arrow { flex-basis: 38px; width: 38px; height: 38px; font-size: 28px; }
 }
+
+/* Cómo trabajamos */
+.how-we-work{background:#fff}
+.how-we-work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:980px;margin:0 auto}
+.how-we-work-card{position:relative;padding:28px 24px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 8px 24px rgba(15,35,55,.05)}
+.how-we-work-number{width:42px;height:42px;display:grid;place-items:center;border-radius:12px;background:#eaf4ff;color:var(--blue);font-weight:800;font-size:14px;margin-bottom:18px}
+.how-we-work-card h3{margin:0 0 9px;font-size:18px}
+.how-we-work-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.how-we-work-cta{text-align:center;margin-top:28px}
+.how-we-work-cta .btn{min-width:210px}
+@media(max-width:760px){
+  .how-we-work-grid{grid-template-columns:1fr;gap:14px}
+  .how-we-work-card{padding:22px}
+}
 </style>
 </head>
 <body>
@@ -121,6 +135,7 @@ footer{background:#080d13;color:#b5c0cc;padding:25px 0}.footer-inner{display:fle
         <a href="#servicios">Servicios</a>
         <a href="#nosotros">Nosotros</a>
         <a href="#trabajos">Trabajos</a>
+        <a href="#como-trabajamos">Proceso</a>
         <a href="#productos">Productos</a>
         <a href="#contacto">Contacto</a>
       </nav>
@@ -195,6 +210,41 @@ footer{background:#080d13;color:#b5c0cc;padding:25px 0}.footer-inner{display:fle
             <li>Mantenimiento preventivo y correctivo</li>
             <li>Reparaciones y repuestos</li>
           </ul>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="como-trabajamos" class="section how-we-work">
+      <div class="container">
+        <div class="section-heading">
+          <span class="kicker">NUESTRO PROCESO</span>
+          <h2>Cómo trabajamos</h2>
+          <p>Un proceso simple y claro para que sepas qué hacemos con tu equipo.</p>
+        </div>
+
+        <div class="how-we-work-grid">
+          <article class="how-we-work-card">
+            <div class="how-we-work-number">01</div>
+            <h3>Recibimos tu equipo</h3>
+            <p>Revisamos el equipo y conocemos la falla o necesidad de mantenimiento.</p>
+          </article>
+
+          <article class="how-we-work-card">
+            <div class="how-we-work-number">02</div>
+            <h3>Diagnosticamos y presupuestamos</h3>
+            <p>Te informamos qué necesita el equipo y el presupuesto <strong>sin cargo</strong>.</p>
+          </article>
+
+          <article class="how-we-work-card">
+            <div class="how-we-work-number">03</div>
+            <h3>Reparamos y entregamos</h3>
+            <p>Con tu aprobación, realizamos el trabajo y dejamos el equipo listo para entregar.</p>
+          </article>
+        </div>
+
+        <div class="how-we-work-cta">
+          <a class="btn btn-primary" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20un%20servicio." target="_blank" rel="noopener">Consultar por WhatsApp</a>
         </div>
       </div>
     </section>
