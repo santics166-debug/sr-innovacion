@@ -76,7 +76,14 @@ function renderProductos() {
       </div>
     `;
 
-    productViewport.parentNode.parentNode.insertBefore(searchWrap, productViewport.parentNode);
+    const productsCarousel = productViewport.parentElement;
+    const sectionHeading = productsCarousel?.parentElement?.querySelector('.section-heading');
+
+    if (sectionHeading) {
+      sectionHeading.insertAdjacentElement('afterend', searchWrap);
+    } else if (productsCarousel?.parentElement) {
+      productsCarousel.parentElement.insertBefore(searchWrap, productsCarousel);
+    }
     productSearch = searchWrap.querySelector('#productSearch');
 
     productSearch.addEventListener('input', () => {
@@ -94,7 +101,7 @@ function renderProductos() {
             return texto.includes(termino);
           });
 
-      renderProductosLista(filtrados);
+      renderProductosLista(filtrados, Boolean(termino));
     });
 
     const style = document.createElement('style');
@@ -116,15 +123,37 @@ function renderProductos() {
         transform:translateY(-50%); font-size:17px;
         pointer-events:none;
       }
+      .products-carousel.search-mode .product-track {
+        transform: none !important;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .products-carousel.search-mode .product-track .product-card {
+        flex: initial;
+        width: auto;
+        margin-right: 0;
+      }
+      @media (max-width: 900px) {
+        .products-carousel.search-mode .product-track { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      @media (max-width: 650px) {
+        .products-carousel.search-mode .product-track { grid-template-columns: 1fr; }
+      }
+      .products-carousel.search-mode .product-arrow,
+      .products-carousel.search-mode .product-dots { display: none; }
     `;
     document.head.appendChild(style);
   }
 
-  renderProductosLista(productosPublicos);
+  renderProductosLista(productosPublicos, false);
 }
 
-function renderProductosLista(listaProductos) {
+function renderProductosLista(listaProductos, filtrando = false) {
   if (!productTrack) return;
+
+  const productsCarousel = productTrack.closest('.products-carousel');
+  productsCarousel?.classList.toggle('search-mode', filtrando);
 
   if (!listaProductos.length) {
     productTrack.innerHTML =
