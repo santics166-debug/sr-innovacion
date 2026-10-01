@@ -76,7 +76,7 @@ function renderProductos() {
       </div>
     `;
 
-    productViewport.parentNode.insertBefore(searchWrap, productViewport);
+    productViewport.parentNode.parentNode.insertBefore(searchWrap, productViewport.parentNode);
     productSearch = searchWrap.querySelector('#productSearch');
 
     productSearch.addEventListener('input', () => {
