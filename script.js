@@ -61,13 +61,89 @@ function productPages() {
 function renderProductos() {
   if (!productTrack) return;
 
+  let productSearch = document.querySelector('#productSearch');
+
+  if (!productSearch && productViewport) {
+    const searchWrap = document.createElement('div');
+    searchWrap.className = 'product-search-wrap';
+    searchWrap.innerHTML = `
+      <div class="product-search">
+        <span class="product-search-icon">🔍</span>
+        <input id="productSearch" type="search"
+          placeholder="Buscar producto..."
+          aria-label="Buscar producto"
+          autocomplete="off">
+      </div>
+    `;
+
+    productViewport.parentNode.insertBefore(searchWrap, productViewport);
+    productSearch = searchWrap.querySelector('#productSearch');
+
+    productSearch.addEventListener('input', () => {
+      const termino = productSearch.value.trim().toLowerCase();
+
+      const filtrados = !termino
+        ? productosPublicos
+        : productosPublicos.filter(producto => {
+            const texto = [
+              producto.nombre || '',
+              producto.caracteristicas || '',
+              producto.precio || ''
+            ].join(' ').toLowerCase();
+
+            return texto.includes(termino);
+          });
+
+      renderProductosLista(filtrados);
+    });
+
+    const style = document.createElement('style');
+    style.textContent = `
+      .product-search-wrap { width:100%; margin:0 auto 18px; }
+      .product-search { position:relative; width:min(100%,520px); margin:0 auto; }
+      .product-search input {
+        width:100%; height:46px; padding:0 16px 0 44px;
+        border:1px solid #d8dee8; border-radius:24px;
+        background:#fff; color:#172033; font-size:15px;
+        outline:none; box-shadow:0 3px 12px rgba(0,0,0,.06);
+      }
+      .product-search input:focus {
+        border-color:#1265c5;
+        box-shadow:0 3px 14px rgba(18,101,197,.14);
+      }
+      .product-search-icon {
+        position:absolute; left:16px; top:50%;
+        transform:translateY(-50%); font-size:17px;
+        pointer-events:none;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  renderProductosLista(productosPublicos);
+}
+
+function renderProductosLista(listaProductos) {
+  if (!productTrack) return;
+
+  if (!listaProductos.length) {
+    productTrack.innerHTML =
+      '<p style="padding:30px;text-align:center;width:100%;">No se encontraron productos.</p>';
+    if (productDots) productDots.innerHTML = '';
+    if (productPrev) productPrev.disabled = true;
+    if (productNext) productNext.disabled = true;
+    return;
+  }
+
+  const productosParaRenderizar = listaProductos;
+
   if (!productosPublicos.length) {
     productTrack.innerHTML =
       '<p style="padding:30px;text-align:center;">No hay productos disponibles.</p>';
     return;
   }
 
-  productTrack.innerHTML = productosPublicos.map(producto => {
+  productTrack.innerHTML = productosParaRenderizar.map(producto => {
     const nombre = escapar(producto.nombre);
     const precio = producto.precio ? escapar(producto.precio) : 'Consultar';
 
@@ -116,8 +192,12 @@ function renderProductos() {
   }).join('');
 
   productPage = 0;
+
+  const listaOriginal = productosPublicos;
+  productosPublicos = productosParaRenderizar;
   renderProductDots();
   updateProductCarousel();
+  productosPublicos = listaOriginal;
 }
 
 function renderProductDots() {
@@ -144,6 +224,14 @@ function renderProductDots() {
 
 function updateProductCarousel() {
   if (!productTrack || !productViewport) return;
+
+  const buscador = document.querySelector('#productSearch');
+  if (buscador && buscador.value.trim()) {
+    productTrack.style.transform = 'translateX(0)';
+    if (productPrev) productPrev.disabled = true;
+    if (productNext) productNext.disabled = true;
+    return;
+  }
 
   const visible = productVisible();
   const paginas = productPages();
