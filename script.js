@@ -6,15 +6,15 @@
 const menuBtn = document.querySelector('.menu-btn');
 const menu = document.querySelector('.menu');
 
-menuBtn?.addEventListener('click', () => {
+if (menuBtn) menuBtn.addEventListener('click', () => {
   const open = menu.classList.toggle('open');
   menuBtn.setAttribute('aria-expanded', String(open));
 });
 
 document.querySelectorAll('.menu a').forEach(link => {
   link.addEventListener('click', () => {
-    menu?.classList.remove('open');
-    menuBtn?.setAttribute('aria-expanded', 'false');
+    if (menu) menu.classList.remove('open');
+    if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
   });
 });
 
@@ -77,11 +77,11 @@ function renderProductos() {
     `;
 
     const productsCarousel = productViewport.parentElement;
-    const sectionHeading = productsCarousel?.parentElement?.querySelector('.section-heading');
+    const sectionHeading = productsCarousel && productsCarousel.parentElement ? productsCarousel.parentElement.querySelector('.section-heading') : null;
 
     if (sectionHeading) {
       sectionHeading.insertAdjacentElement('afterend', searchWrap);
-    } else if (productsCarousel?.parentElement) {
+    } else if (productsCarousel && productsCarousel.parentElement) {
       productsCarousel.parentElement.insertBefore(searchWrap, productsCarousel);
     }
     productSearch = searchWrap.querySelector('#productSearch');
@@ -153,7 +153,7 @@ function renderProductosLista(listaProductos, filtrando = false) {
   if (!productTrack) return;
 
   const productsCarousel = productTrack.closest('.products-carousel');
-  productsCarousel?.classList.toggle('search-mode', filtrando);
+  if (productsCarousel) productsCarousel.classList.toggle('search-mode', filtrando);
 
   if (!listaProductos.length) {
     productTrack.innerHTML =
@@ -278,14 +278,14 @@ function updateProductCarousel() {
   renderProductDots();
 }
 
-productPrev?.addEventListener('click', () => {
+if (productPrev) productPrev.addEventListener('click', () => {
   if (productPage > 0) {
     productPage--;
     updateProductCarousel();
   }
 });
 
-productNext?.addEventListener('click', () => {
+if (productNext) productNext.addEventListener('click', () => {
   if (productPage < productPages() - 1) {
     productPage++;
     updateProductCarousel();
@@ -350,8 +350,8 @@ let photoModalImg = document.querySelector('#photoModalImg');
 let photoModalCaption = document.querySelector('#photoModalCaption');
 
 function cerrarModalFoto() {
-  photoModal?.classList.remove('open');
-  photoModal?.setAttribute('aria-hidden', 'true');
+  if (photoModal) photoModal.classList.remove('open');
+  if (photoModal) photoModal.setAttribute('aria-hidden', 'true');
 }
 
 function abrirModalFoto(imagen, descripcion) {
@@ -365,11 +365,12 @@ function abrirModalFoto(imagen, descripcion) {
   photoModal.setAttribute('aria-hidden', 'false');
 }
 
-document.querySelector('.photo-modal-close')?.addEventListener(
+const photoModalClose = document.querySelector('.photo-modal-close');
+if (photoModalClose) photoModalClose.addEventListener(
   'click', cerrarModalFoto
 );
 
-photoModal?.addEventListener('click', e => {
+if (photoModal) photoModal.addEventListener('click', e => {
   if (e.target === photoModal) cerrarModalFoto();
 });
 
@@ -475,6 +476,7 @@ function renderTrabajos(trabajos) {
                       fotos.map((imagen, indice) => {
                         const totalFotos = fotos.length;
                         let etapa = 'PROCESO';
+
                         if (totalFotos === 1) {
                           etapa = 'ANTES';
                         } else if (indice === 0) {
@@ -517,7 +519,7 @@ function activarGalerias() {
   document.querySelectorAll('.work-category-toggle').forEach(btn => {
     btn.addEventListener('click', () => {
       const category = btn.closest('.work-category');
-      const panel = category?.querySelector('.work-gallery-wrap');
+      const panel = category ? category.querySelector('.work-gallery-wrap') : null;
 
       if (!category || !panel) return;
 
@@ -529,7 +531,7 @@ function activarGalerias() {
 
         if (item !== category) {
           item.classList.remove('open');
-          otherBtn?.setAttribute('aria-expanded', 'false');
+          if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
           if (otherPanel) otherPanel.hidden = true;
         }
       });
@@ -557,7 +559,6 @@ function activarFotos() {
     });
   });
 }
-
 
 /* ================= INICIO ================= */
 
