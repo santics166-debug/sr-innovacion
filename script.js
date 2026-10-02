@@ -473,8 +473,18 @@ function renderTrabajos(trabajos) {
                   <div class="work-gallery">
                     ${
                       fotos.map((imagen, indice) => {
+                        const totalFotos = fotos.length;
+                        let etapa = 'PROCESO';
+                        if (totalFotos === 1) {
+                          etapa = 'ANTES';
+                        } else if (indice === 0) {
+                          etapa = 'ANTES';
+                        } else if (indice === totalFotos - 1) {
+                          etapa = 'DESPUÉS';
+                        }
+
                         const caption =
-                          `${categoria} · ${trabajo.nombre} · Foto ${indice + 1} (${indice + 1}/${fotos.length})`;
+                          `${categoria} · ${trabajo.nombre} · ${etapa} (${indice + 1}/${totalFotos})`;
 
                         return `
                           <button class="work-photo"
@@ -484,7 +494,7 @@ function renderTrabajos(trabajos) {
                             <img src="${escapar(imagen)}"
                                  alt="${escapar(caption)}"
                                  loading="lazy">
-                            <span>Ver foto</span>
+                            <span>${etapa}</span>
                           </button>
                         `;
                       }).join('')
@@ -546,6 +556,14 @@ function activarFotos() {
       abrirModalFoto(btn.dataset.full, btn.dataset.caption);
     });
   });
+}
+
+
+/* Etiquetas ANTES / PROCESO / DESPUÉS */
+.work-photo span {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
 }
 
 /* ================= INICIO ================= */
