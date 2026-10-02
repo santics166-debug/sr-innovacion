@@ -559,13 +559,6 @@ function activarFotos() {
 }
 
 
-/* Etiquetas ANTES / PROCESO / DESPUÉS */
-.work-photo span {
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: .04em;
-}
-
 /* ================= INICIO ================= */
 
 cargarProductosPublicos();
