@@ -1,3 +1,4 @@
+/* SR INNOVACION - GALERIA V9: etiquetas debajo de las fotos */
 /* =====================================================
    SR INNOVACION - SCRIPT PUBLICO ESTABLE
    Productos y trabajos desde Cloudflare D1 / R2
@@ -290,9 +291,10 @@
     var style = document.createElement('style');
     style.id = 'sr-gallery-stable-css';
     style.textContent = [
-      '.work-photo{position:relative;display:flex;flex-direction:column;align-items:stretch;padding:0;border:0;background:transparent;overflow:visible;text-align:left}',
-      '.work-photo img{display:block;width:100%;height:auto;border-radius:12px;object-fit:cover}',
-      '.work-photo .sr-stage-label{position:static;display:block;width:100%;box-sizing:border-box;margin-top:8px;padding:7px 8px;border-radius:8px;background:#eaf3ff;color:#1265c5;font-size:12px;font-weight:800;letter-spacing:.04em;line-height:1.2;text-align:center;z-index:auto}',
+      '.work-photo{position:relative!important;display:flex!important;flex-direction:column!important;align-items:stretch!important;justify-content:flex-start!important;width:100%!important;height:auto!important;min-height:0!important;aspect-ratio:auto!important;padding:0!important;border:0!important;background:transparent!important;overflow:visible!important;text-align:left!important;box-shadow:none!important}',
+      '.work-photo img{position:static!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:4/3!important;object-fit:cover!important;border-radius:12px!important;margin:0!important;box-shadow:none!important;opacity:1!important}',
+      '.work-photo>span:not(.sr-stage-label){display:none!important}',
+      '.work-photo .sr-stage-label{position:static!important;display:block!important;width:100%!important;height:auto!important;box-sizing:border-box!important;margin:8px 0 0!important;padding:7px 8px!important;border:0!important;border-radius:8px!important;background:#eaf3ff!important;background-image:none!important;color:#1265c5!important;font-size:12px!important;font-weight:800!important;letter-spacing:.04em!important;line-height:1.2!important;text-align:center!important;z-index:auto!important;box-shadow:none!important;transform:none!important;opacity:1!important}',
       '.photo-modal{position:fixed;inset:0;background:rgba(4,8,12,.88);z-index:100;display:none;align-items:center;justify-content:center;padding:30px}',
       '.photo-modal.open{display:flex}',
       '.photo-modal-content{position:relative;max-width:900px;width:min(82vw,900px);text-align:center}',
