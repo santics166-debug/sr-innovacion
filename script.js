@@ -290,8 +290,9 @@
     var style = document.createElement('style');
     style.id = 'sr-gallery-stable-css';
     style.textContent = [
-      '.work-photo{position:relative}',
-      '.work-photo .sr-stage-label{position:absolute;left:8px;top:8px;padding:4px 8px;border-radius:999px;background:rgba(8,13,19,.82);color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em;z-index:2}',
+      '.work-photo{position:relative;display:flex;flex-direction:column;align-items:stretch;padding:0;border:0;background:transparent;overflow:visible;text-align:left}',
+      '.work-photo img{display:block;width:100%;height:auto;border-radius:12px;object-fit:cover}',
+      '.work-photo .sr-stage-label{position:static;display:block;width:100%;box-sizing:border-box;margin-top:8px;padding:7px 8px;border-radius:8px;background:#eaf3ff;color:#1265c5;font-size:12px;font-weight:800;letter-spacing:.04em;line-height:1.2;text-align:center;z-index:auto}',
       '.photo-modal{position:fixed;inset:0;background:rgba(4,8,12,.88);z-index:100;display:none;align-items:center;justify-content:center;padding:30px}',
       '.photo-modal.open{display:flex}',
       '.photo-modal-content{position:relative;max-width:900px;width:min(82vw,900px);text-align:center}',
