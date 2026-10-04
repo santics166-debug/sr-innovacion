@@ -148,10 +148,11 @@ function updateProductCarousel() {
 
   productPage = Math.min(productPage, paginas - 1);
 
-  const step = productViewport.clientWidth / visible;
+  const cards = [...productTrack.querySelectorAll('.product-card')];
+  const targetCard = cards[productPage * visible];
+  const offset = targetCard ? targetCard.offsetLeft : 0;
 
-  productTrack.style.transform =
-    `translateX(-${productPage * step * visible}px)`;
+  productTrack.style.transform = `translateX(-${offset}px)`;
 
   if (productPrev) productPrev.disabled = productPage === 0;
   if (productNext) productNext.disabled = productPage === paginas - 1;
@@ -351,6 +352,13 @@ async function cargarTrabajosPublicos() {
   }
 }
 
+function etapaFoto(indice, total) {
+  if (total <= 1) return 'ANTES';
+  if (indice === 0) return 'ANTES';
+  if (indice === total - 1) return 'DESPUÉS';
+  return 'PROCESO';
+}
+
 function renderTrabajos(trabajos) {
   const contenedor = document.querySelector('.work-categories');
   if (!contenedor) return;
@@ -429,8 +437,9 @@ function renderTrabajos(trabajos) {
                   <div class="work-gallery">
                     ${
                       fotos.map((imagen, indice) => {
+                        const etapa = etapaFoto(indice, fotos.length);
                         const caption =
-                          `${categoria} · ${trabajo.nombre} · Foto ${indice + 1} (${indice + 1}/${fotos.length})`;
+                          `${categoria} · ${trabajo.nombre} · ${etapa} (${indice + 1}/${fotos.length})`;
 
                         return `
                           <button class="work-photo"
@@ -440,7 +449,7 @@ function renderTrabajos(trabajos) {
                             <img src="${escapar(imagen)}"
                                  alt="${escapar(caption)}"
                                  loading="lazy">
-                            <span>Ver foto</span>
+                            <span>${etapa}</span>
                           </button>
                         `;
                       }).join('')
@@ -508,49 +517,3 @@ function activarFotos() {
 
 cargarProductosPublicos();
 cargarTrabajosPublicos();
-
-
-/* Flechas del visor de trabajos - responsive */
-(function() {
-  if (document.getElementById('sr-photo-modal-nav-style')) return;
-  const style = document.createElement('style');
-  style.id = 'sr-photo-modal-nav-style';
-  style.textContent = `
-    .photo-modal-nav {
-      position: fixed !important;
-      top: 50% !important;
-      transform: translateY(-50%) !important;
-      width: 48px !important;
-      height: 48px !important;
-      border: 1px solid rgba(255,255,255,.55) !important;
-      border-radius: 50% !important;
-      background: rgba(10,24,42,.78) !important;
-      color: #fff !important;
-      font-size: 32px !important;
-      line-height: 1 !important;
-      display: grid !important;
-      place-items: center !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      cursor: pointer !important;
-      z-index: 1003 !important;
-      box-shadow: 0 6px 22px rgba(0,0,0,.35) !important;
-    }
-    .photo-modal-prev { left: max(12px, calc(50% - 465px)) !important; }
-    .photo-modal-next { right: max(12px, calc(50% - 465px)) !important; }
-    .photo-modal-nav:hover:not(:disabled) { background: rgba(18,101,197,.95) !important; }
-    .photo-modal-nav:disabled { opacity: .28 !important; cursor: default !important; }
-    .photo-modal-nav[hidden] { display: none !important; }
-    @media (max-width: 700px) {
-      .photo-modal { padding: 12px !important; }
-      .photo-modal-content { width: 92vw !important; max-width: 92vw !important; }
-      .photo-modal img { max-width: 92vw !important; max-height: 72vh !important; }
-      .photo-modal-nav { width: 42px !important; height: 42px !important; font-size: 28px !important; }
-      .photo-modal-prev { left: 8px !important; }
-      .photo-modal-next { right: 8px !important; }
-      .photo-modal-close { right: 8px !important; top: 4px !important; font-size: 38px !important; z-index: 1004 !important; }
-      .photo-modal-content p { padding: 0 42px !important; font-size: 12px !important; }
-    }
-  `;
-  document.head.appendChild(style);
-})();
