@@ -167,7 +167,13 @@ filter:blur(12px);transform:rotate(-4deg);}
 <style>
 .used-equipment-section{background:#f7faff;padding-top:30px}
 .used-equipment-box{display:grid;grid-template-columns:1.05fr .95fr;gap:35px;align-items:center;padding:38px;border:1px solid #dce9f7;border-radius:24px;background:linear-gradient(135deg,#eef7ff 0%,#dceeff 100%);overflow:hidden}
-.used-equipment-copy h2{font-size:40px;line-height:1.1;letter-spacing:-1.5px;margin:10px 0 14px}.used-equipment-copy p{max-width:620px;color:#59687a;margin:0 0 24px;font-size:16px}.used-equipment-visual{min-height:245px;position:relative}.used-equipment-machine{position:absolute;background:linear-gradient(145deg,#f9fbfd,#aeb9c4);border:1px solid rgba(60,80,100,.18);box-shadow:0 18px 35px rgba(20,45,70,.18)}.machine-slicer{width:190px;height:105px;right:105px;top:25px;border-radius:18px 18px 10px 10px;transform:skewY(-4deg)}.machine-slicer:after{content:"";position:absolute;width:80px;height:20px;right:28px;top:25px;border-radius:4px;background:#697786;box-shadow:-65px 38px 0 -4px #d7dee5}.machine-scale{width:105px;height:125px;right:0;bottom:5px;border-radius:10px}.machine-scale:before{content:"";position:absolute;width:70px;height:38px;left:18px;top:-28px;border-radius:8px;background:#263746;box-shadow:0 0 0 5px #d7dee5}.machine-gastro{width:175px;height:75px;left:20px;bottom:5px;border-radius:12px}.machine-gastro:after{content:"";position:absolute;width:65px;height:15px;left:55px;top:20px;border-radius:4px;background:#455566}@media(max-width:800px){.used-equipment-box{grid-template-columns:1fr;padding:28px}.used-equipment-copy h2{font-size:32px}.used-equipment-visual{min-height:190px;transform:scale(.9);transform-origin:center top}.used-equipment-section{padding-top:15px}}
+.used-equipment-copy h2{font-size:40px;line-height:1.1;letter-spacing:-1.5px;margin:10px 0 14px}.used-equipment-copy p{max-width:620px;color:#59687a;margin:0 0 24px;font-size:16px}
+.used-equipment-carousel{position:relative;min-height:330px;display:flex;align-items:center;justify-content:center;padding:0 28px 30px}
+.used-equipment-image-wrap{position:relative;width:100%;height:300px;border-radius:18px;background:rgba(255,255,255,.78);border:1px solid rgba(190,210,230,.8);box-shadow:0 18px 35px rgba(20,45,70,.12);overflow:hidden}
+.used-equipment-slide{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .55s ease;display:block;padding:10px}.used-equipment-slide.is-active{opacity:1}
+.used-equipment-arrow{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;border-radius:50%;background:#fff;color:#10233b;font-size:31px;line-height:1;box-shadow:0 6px 18px rgba(20,45,70,.18);cursor:pointer}.used-equipment-arrow:hover{transform:translateY(-50%) scale(1.05)}.used-equipment-prev{left:4px}.used-equipment-next{right:4px}
+.used-equipment-dots{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:center;gap:7px}.used-equipment-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:#a9b9ca;cursor:pointer}.used-equipment-dots button.is-active{width:22px;border-radius:99px;background:#1268d9}
+@media(max-width:800px){.used-equipment-box{grid-template-columns:1fr;padding:28px}.used-equipment-copy h2{font-size:32px}.used-equipment-carousel{min-height:255px;padding:0 22px 27px}.used-equipment-image-wrap{height:235px}.used-equipment-arrow{width:36px;height:36px;font-size:28px}.used-equipment-prev{left:0}.used-equipment-next{right:0}.used-equipment-section{padding-top:15px}}
 </style>
 </head>
 <body>
@@ -292,10 +298,25 @@ filter:blur(12px);transform:rotate(-4deg);}
             <p>Equipos revisados, en buen estado y listos para trabajar. Consultá por cortadoras, balanzas, máquinas gastronómicas y otros equipos disponibles.</p>
             <a class="btn btn-primary" href="https://wa.me/543454958446?text=Hola%20SR%20INNOVACION%2C%20quiero%20consultar%20por%20equipos%20en%20venta." target="_blank" rel="noopener">Consultar equipos disponibles</a>
           </div>
-          <div class="used-equipment-visual" aria-hidden="true">
-            <div class="used-equipment-machine machine-slicer"></div>
-            <div class="used-equipment-machine machine-scale"></div>
-            <div class="used-equipment-machine machine-gastro"></div>
+          <div class="used-equipment-carousel" aria-label="Equipos disponibles para venta">
+            <button class="used-equipment-arrow used-equipment-prev" type="button" aria-label="Equipo anterior">‹</button>
+            <div class="used-equipment-image-wrap">
+              <img class="used-equipment-slide is-active" src="assets/equipos-venta/cortadora.webp" alt="Cortadora de fiambre" loading="lazy">
+              <img class="used-equipment-slide" src="assets/equipos-venta/balanza.webp" alt="Balanza electrónica" loading="lazy">
+              <img class="used-equipment-slide" src="assets/equipos-venta/picadora.webp" alt="Picadora de carne" loading="lazy">
+              <img class="used-equipment-slide" src="assets/equipos-venta/horno.jpg" alt="Horno gastronómico" loading="lazy">
+              <img class="used-equipment-slide" src="assets/equipos-venta/termoselladora.webp" alt="Termoselladora" loading="lazy">
+              <img class="used-equipment-slide" src="assets/equipos-venta/termoselladora-2.webp" alt="Termoselladora" loading="lazy">
+            </div>
+            <button class="used-equipment-arrow used-equipment-next" type="button" aria-label="Siguiente equipo">›</button>
+            <div class="used-equipment-dots" aria-label="Seleccionar equipo">
+              <button class="is-active" type="button" aria-label="Mostrar cortadora de fiambre"></button>
+              <button type="button" aria-label="Mostrar balanza electrónica"></button>
+              <button type="button" aria-label="Mostrar picadora de carne"></button>
+              <button type="button" aria-label="Mostrar horno gastronómico"></button>
+              <button type="button" aria-label="Mostrar termoselladora"></button>
+              <button type="button" aria-label="Mostrar segunda termoselladora"></button>
+            </div>
           </div>
         </div>
       </div>
@@ -350,5 +371,32 @@ filter:blur(12px);transform:rotate(-4deg);}
     </div>
   </footer>
   <script src="script.js?v=9"></script>
+
+<script>
+(function(){
+  var root=document.querySelector('.used-equipment-carousel');
+  if(!root) return;
+  var slides=Array.prototype.slice.call(root.querySelectorAll('.used-equipment-slide'));
+  var dots=Array.prototype.slice.call(root.querySelectorAll('.used-equipment-dots button'));
+  var current=0, timer=null;
+  function show(i){
+    current=(i+slides.length)%slides.length;
+    slides.forEach(function(el,n){el.classList.toggle('is-active',n===current);});
+    dots.forEach(function(el,n){el.classList.toggle('is-active',n===current);});
+  }
+  function next(){show(current+1);}
+  function prev(){show(current-1);}
+  function start(){clearInterval(timer);timer=setInterval(next,3000);}
+  root.querySelector('.used-equipment-next').addEventListener('click',function(){next();start();});
+  root.querySelector('.used-equipment-prev').addEventListener('click',function(){prev();start();});
+  dots.forEach(function(dot,n){dot.addEventListener('click',function(){show(n);start();});});
+  root.addEventListener('mouseenter',function(){clearInterval(timer);});
+  root.addEventListener('mouseleave',start);
+  root.addEventListener('touchstart',function(){clearInterval(timer);},{passive:true});
+  root.addEventListener('touchend',start,{passive:true});
+  start();
+})();
+</script>
+
 </body>
 </html>
